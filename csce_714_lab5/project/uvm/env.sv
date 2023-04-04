@@ -32,7 +32,12 @@ class env extends uvm_env;
 	       //Create System bus monitor "sbus_monitor"
 	       //Create Scoreboard "sb"
 
-				cpu[0] = cpu_agent_c::type_id::create("cpu[0]", this);   // HINT
+            cpu[0] = cpu_agent_c::type_id::create("cpu[0]", this);   // HINT
+            cpu[1] = cpu_agent_c::type_id::create("cpu[1]", this);
+            cpu[2] = cpu_agent_c::type_id::create("cpu[2]", this);
+            cpu[3] = cpu_agent_c::type_id::create("cpu[3]", this);
+            sbus_monitor = system_bus_monitor_c::type_id::create("sbus_monitor", this);
+            sb = cache_scoreboard_c::type_id::create("sb", this);
     
     endfunction : build_phase
 

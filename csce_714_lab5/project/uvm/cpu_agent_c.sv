@@ -15,6 +15,7 @@ class cpu_agent_c extends uvm_agent;
 //LAB5: TO DO: Declare handles for monitor, driver and sequencer
     cpu_driver_c driver;
     cpu_sequencer_c sequencer;
+    cpu_monitor_c monitor;
 
 //Declare component utility macro for cpu_agent_c and set flag as UVM_ALL_ON for the field is_active which is of type uvm_active_passive_enum
     `uvm_component_utils_begin(cpu_agent_c)
@@ -30,7 +31,7 @@ class cpu_agent_c extends uvm_agent;
     function void build_phase(uvm_phase phase);
         super.build_phase(phase);
 //LAB5: TO DO: Create a Monitor
-	
+	monitor = cpu_monitor_c::type_id::create("monitor", this);
 	if(is_active == UVM_ACTIVE) begin
             sequencer = cpu_sequencer_c::type_id::create("sequencer", this);
             driver = cpu_driver_c::type_id::create("driver", this);
