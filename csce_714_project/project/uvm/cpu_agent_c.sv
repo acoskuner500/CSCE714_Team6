@@ -5,41 +5,36 @@
 // Designers: Venky & Suru
 //=====================================================================
 
-//Extend cpu_agent_c class from uvm_agent
 class cpu_agent_c extends uvm_agent;
 
-//Declare a protected field is_active of type uvm_active_passive_enum
-//this field determines whether an agent is active or passive
+    //this field determines whether an agent is active or passive
     protected uvm_active_passive_enum is_active = UVM_ACTIVE;
 
-//LAB5: TO DO: Declare handles for monitor, driver and sequencer
+    cpu_monitor_c monitor;
     cpu_driver_c driver;
     cpu_sequencer_c sequencer;
-    cpu_monitor_c monitor;
 
-//Declare component utility macro for cpu_agent_c and set flag as UVM_ALL_ON for the field is_active which is of type uvm_active_passive_enum
+    //component macro
     `uvm_component_utils_begin(cpu_agent_c)
         `uvm_field_enum(uvm_active_passive_enum, is_active, UVM_ALL_ON)
     `uvm_component_utils_end
 
-//Constructor
+    //Constructor
     function new (string name, uvm_component parent);
         super.new(name, parent);
     endfunction : new
 
-//Define build_phase()
+    //UVM build phase method
     function void build_phase(uvm_phase phase);
         super.build_phase(phase);
-//LAB5: TO DO: Create a Monitor
-
-	monitor = cpu_monitor_c::type_id::create("monitor", this);
-	if(is_active == UVM_ACTIVE) begin
+        monitor = cpu_monitor_c::type_id::create("monitor", this);
+        if(is_active == UVM_ACTIVE) begin
             sequencer = cpu_sequencer_c::type_id::create("sequencer", this);
             driver = cpu_driver_c::type_id::create("driver", this);
         end
     endfunction : build_phase
 
-//Define connect_phase()
+    //UVM connect phase method
     function void connect_phase(uvm_phase phase);
         if(is_active == UVM_ACTIVE)
             driver.seq_item_port.connect(sequencer.seq_item_export);
